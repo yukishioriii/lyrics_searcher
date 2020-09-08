@@ -1,3 +1,4 @@
 lyrics/
 *.pyc
 .vscode
+docs.db

@@ -8,6 +8,7 @@ from collections import Counter
 from utils.utils import mecab_tokenizer
 from scipy.sparse import csr_matrix
 import scipy.sparse as sp
+from database.doc_db import docdb
 
 
 class TfidfBuilder():
@@ -25,7 +26,7 @@ class TfidfBuilder():
     matrix = None
     freq = None
 
-    def __init__(self, num_buckets=2**19):
+    def __init__(self, num_buckets=2**24):
         super().__init__()
         self.num_buckets = num_buckets
         self.read_data()
@@ -42,6 +43,16 @@ class TfidfBuilder():
 
     def hash(self, token):
         return murmurhash3_32(token) % self.num_buckets
+
+    def read_wiki(self):
+        for doc_id in tqdm(docdb.get_doc_ids()):
+            self.names.append(doc_id)
+
+            self.docs.append(
+                re.sub("[^A-z0-9 ]", "", docdb.get_doc_text(doc_id).lower()).split())
+
+            if len(self.names) > 500000:
+                break
 
     def get_doc_freq(self, mat):
         binary = (mat > 0).astype(int)
@@ -110,6 +121,7 @@ class TfidfBuilder():
 if __name__ == "__main__":
     a = TfidfBuilder()
     while True:
-        
+
         text = input("> ")
-        print([(a.IDX2NAME[i], score) for (i, score) in a.get_nearest(text, 10)])
+        print([(a.IDX2NAME[i], score)
+               for (i, score) in a.get_nearest(text, 10)])
