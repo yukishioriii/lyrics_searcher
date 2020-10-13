@@ -1,3 +1,5 @@
 lyrics/
 *.pyc
 .vscode
+animelyrics/animesonglyrics/*.txt
+*.zip
