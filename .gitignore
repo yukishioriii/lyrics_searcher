@@ -3,3 +3,4 @@ lyrics/
 .vscode
 animelyrics/animesonglyrics/*.txt
 *.zip
+docs.db
