@@ -4,3 +4,4 @@ lyrics/
 animelyrics/animesonglyrics/*.txt
 *.zip
 docs.db
+*.txt
